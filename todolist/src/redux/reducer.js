@@ -1,8 +1,14 @@
-import { SET_RAW_DATA, TOGGLE_TASK } from "./actions";
+import {
+  SET_RAW_DATA,
+  TOGGLE_TASK,
+  ADD_TASK,
+  SET_SEARCH_TERM,
+} from "./actions";
 
 const initialState = {
   rawData: [],
   showTaskComponent: false,
+  searchTerm: "",
 };
 
 export const rawDataReducer = (state = initialState, action) => {
@@ -17,6 +23,18 @@ export const rawDataReducer = (state = initialState, action) => {
       return {
         ...state,
         showTaskComponent: !state.showTaskComponent,
+      };
+
+    case ADD_TASK:
+      return {
+        ...state,
+        rawData: [...state.rawData, action.payload],
+      };
+
+    case SET_SEARCH_TERM:
+      return {
+        ...state,
+        searchTerm: action.payload,
       };
     default:
       return state;

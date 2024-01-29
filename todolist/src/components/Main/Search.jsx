@@ -1,16 +1,26 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleTask } from "../../redux/actions";
+import { toggleTask, setSearchTerm } from "../../redux/actions";
 
 function Search() {
   const showTaskComponent = useSelector(
     (state) => state.data.showTaskComponent
   );
   const dispatch = useDispatch();
+  const [localSearchTerm, setLocalSearchTerm] = React.useState("");
 
   const handleToggle = () => {
     dispatch(toggleTask());
   };
+
+  const handleSearchChange = (event) => {
+    setLocalSearchTerm(event.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    dispatch(setSearchTerm(localSearchTerm));
+  };
+
   return (
     <div>
       <div className="col-12">
@@ -21,9 +31,15 @@ function Search() {
                 type="text"
                 className="form-control"
                 placeholder="Search"
+                value={localSearchTerm}
+                onChange={handleSearchChange}
               />
               <div className="input-group-append">
-                <button className="btn btn-primary" type="button">
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  onClick={handleSearchSubmit}
+                >
                   Go!
                 </button>
               </div>

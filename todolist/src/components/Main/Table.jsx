@@ -1,6 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Table = ({ data }) => {
+  const searchTerm = useSelector((state) => state.data.searchTerm);
+  const filteredData = data.filter((item) => item.name.includes(searchTerm));
   return (
     <div>
       {/* Your component JSX goes here */}
@@ -28,7 +31,7 @@ const Table = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {filteredData.map((item) => (
               <tr key={item.id}>
                 <th scope="row" className="text-center">
                   {item.id}
