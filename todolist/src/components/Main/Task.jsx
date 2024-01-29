@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleTask, addTask } from "../../redux/actions";
+import { toggleTask, addTask, finishEditingTask } from "../../redux/actions";
 
 const Task = () => {
   const dispatch = useDispatch();
   const showTask = useSelector((state) => state.data.showTaskComponent);
+  const taskToEdit = useSelector((state) => state.data.editingTask);
   const [taskName, setTaskName] = React.useState("");
   const [taskLevel, setTaskLevel] = React.useState(0);
+
+  useEffect(() => {
+    if (taskToEdit) {
+      setTaskName(taskToEdit.name);
+      setTaskLevel(taskToEdit.level);
+    }
+  }, [taskToEdit]);
 
   const handleCancel = () => {
     dispatch(toggleTask());
@@ -14,7 +22,12 @@ const Task = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(addTask({ id: Date.now(), name: taskName, level: taskLevel }));
+    if (taskToEdit) {
+      dispatch(finishEditingTask({ ...taskToEdit, name: taskName, level: taskLevel }));
+    } else {
+      dispatch(addTask({ id: Date.now(), name: taskName, level: taskLevel }));
+    }
+    
     dispatch(toggleTask());
   };
 

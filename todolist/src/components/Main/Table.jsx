@@ -1,7 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { startEditingTask } from "../../redux/actions";
 
 const Table = ({ data }) => {
+  const dispatch = useDispatch();
   const searchTerm = useSelector((state) => state.data.searchTerm);
   const filteredData = data.filter((item) => item.name.includes(searchTerm));
   return (
@@ -39,7 +41,10 @@ const Table = ({ data }) => {
                 <td className="text-center">{item.name}</td>
                 <td className="text-center">{levelToString(item.level)}</td>
                 <td className="text-center">
-                  <button className="btn btn-primary btn-sm">
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => dispatch(startEditingTask(item))}
+                  >
                     <i className="fas fa-edit" /> Sửa
                   </button>
                   <button className="btn btn-danger btn-sm">
